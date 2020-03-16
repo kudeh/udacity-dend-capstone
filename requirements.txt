@@ -1,0 +1,10 @@
+jupyter
+ipykernel
+pandas
+matplotlib
+seaborn
+pyspark
+psycopg2
+boto3
+cryptography
+apache-airflow
