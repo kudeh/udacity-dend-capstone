@@ -18,5 +18,16 @@ The following datasets were used to create the analytics database:
     $ (venv) $ pip install -r requirements.txt
     $ (venv) $ ipython kernel install --user --name=projectname
     ```
-
+2. Initialize Airflow & Run Webserver
+    ```bash
+    $ (venv) $ export AIRFLOW_HOME=$(pwd)
+    $ (venv) $ airflow initdb
+    $ (venv) $ airflow webserver -p 8080
+    ```
+4. Run Scheduler (Open New Terminal Tab)
+    ```bash
+    (venv) $ export AIRFLOW_HOME=$(pwd)
+    (venv) $ airflow scheduler
+    ```
+    
 ## Usage
