@@ -11,23 +11,35 @@ The following datasets were used to create the analytics database:
 * Airport Code Table: This is a simple table of airport codes and corresponding cities. The airport codes may refer to either IATA airport code, a three-letter code which is used in passenger reservation, ticketing and baggage-handling systems, or the ICAO airport code which is a four letter code used by ATC systems and for airports that do not have an IATA airport code (from wikipedia). It comes from [here](https://datahub.io/core/airport-codes#data).
 
 ## Setup
-1. Create virtual environment and install dependencies
+1. Python3 & Java 8 Required
+2. Create virtual environment and install dependencies
     ```bash
     $ python3 -m venv venv
     $ source venv/bin/activate
     $ (venv) $ pip install -r requirements.txt
     $ (venv) $ ipython kernel install --user --name=projectname
     ```
-2. Initialize Airflow & Run Webserver
+3. create aws config
+   * create file `dwh.cfg`
+   * add the following contents (fill the fields)
+    ```bash
+    [CLUSTER]
+    HOST=
+    DB_NAME=
+    DB_USER=
+    DB_PASSWORD=
+    DB_PORT=
+   ```
+4. Initialize Airflow & Run Webserver
     ```bash
     $ (venv) $ export AIRFLOW_HOME=$(pwd)
     $ (venv) $ airflow initdb
     $ (venv) $ airflow webserver -p 8080
     ```
-4. Run Scheduler (Open New Terminal Tab)
+5. Run Scheduler (Open New Terminal Tab)
     ```bash
     (venv) $ export AIRFLOW_HOME=$(pwd)
     (venv) $ airflow scheduler
     ```
-    
+
 ## Usage

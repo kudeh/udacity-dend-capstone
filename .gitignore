@@ -135,3 +135,6 @@ dmypy.json
 *.pid
 logs
 *.csv
+
+data/
+sas_data/

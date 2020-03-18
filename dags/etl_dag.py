@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 
 from airflow import DAG
 from airflow.operators.dummy_operator import DummyOperator
+from airflow.operators import (StageToRedshiftOperator, DataQualityOperator)
 
 
 default_args = {
@@ -22,6 +23,8 @@ dag = DAG('etl_dag',
         )
 
 start_operator = DummyOperator(task_id='Begin_execution',  dag=dag)
+
+
 end_operator = DummyOperator(task_id='Stop_execution',  dag=dag)
 
 start_operator >> end_operator

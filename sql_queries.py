@@ -1,7 +1,7 @@
 table_list = ['immigration', 'us_cities_demographics', 'airport_codes', 'world_temperature',
               'i94cit_res', 'i94port', 'i94mode', 'i94addr', 'i94visa']
 
-drop_table_template = "DROP TABLE IF EXISTS {schema}.{table}"
+drop_table_template = "DROP TABLE IF EXISTS {}.{}"
 
 create_table_immigration = """
 CREATE TABLE IF NOT EXISTS public.immigration (
