@@ -19,7 +19,11 @@ The following datasets were used to create the analytics database:
     $ (venv) $ pip install -r requirements.txt
     $ (venv) $ ipython kernel install --user --name=projectname
     ```
-3. create aws config
+3. set java version to use
+    ```bash
+    $(venv) export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
+    ```
+4. create aws config
    * create file `dwh.cfg`
    * add the following contents (fill the fields)
     ```bash
@@ -30,13 +34,13 @@ The following datasets were used to create the analytics database:
     DB_PASSWORD=
     DB_PORT=
    ```
-4. Initialize Airflow & Run Webserver
+5. Initialize Airflow & Run Webserver
     ```bash
     $ (venv) $ export AIRFLOW_HOME=$(pwd)
     $ (venv) $ airflow initdb
     $ (venv) $ airflow webserver -p 8080
     ```
-5. Run Scheduler (Open New Terminal Tab)
+6. Run Scheduler (Open New Terminal Tab)
     ```bash
     (venv) $ export AIRFLOW_HOME=$(pwd)
     (venv) $ airflow scheduler
