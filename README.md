@@ -19,7 +19,7 @@ The following datasets were used to create the analytics database:
     $ (venv) $ pip install -r requirements.txt
     $ (venv) $ ipython kernel install --user --name=projectname
     ```
-3. set java version to use
+3. set java version to java8 if not default
     ```bash
     $(venv) export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
     ```
@@ -33,6 +33,10 @@ The following datasets were used to create the analytics database:
     DB_USER=
     DB_PASSWORD=
     DB_PORT=
+
+    [S3]
+    DATA_LOCATION=''
+    SAS_DATA_LOCATION=''
    ```
 5. Initialize Airflow & Run Webserver
     ```bash

@@ -5,18 +5,18 @@ drop_table_template = "DROP TABLE IF EXISTS {}.{}"
 
 create_table_immigration = """
 CREATE TABLE IF NOT EXISTS public.immigration (
-    cicid INT,
-    i94yr INT,
-    i94mon INT,
-    i94cit INTEGER,
-    i94res INT,
-    i94port CHAR(3),
+    cicid INT PRIMARY KEY,
+    i94yr INT SORTKEY,
+    i94mon INT DISTKEY,
+    i94cit INT REFERENCES i94cit_res(code),
+    i94res INT REFERENCES i94cit_res(code),
+    i94port CHAR(3) REFERENCES i94port(code),
     arrdate DATE,
-    i94mode INT,
-    i94addr INT,
+    i94mode INT REFERENCES i94mode(code),
+    i94addr INT REFERENCES i94addr(code),
     depdate DATE,
     i94bir INT,
-    i94visa INT,
+    i94visa INT REFERENCES i94visa(code),
     count INT,
     dtadfile DATE,
     visapost CHAR(3),
@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS public.immigration (
     biryear INT,
     dtaddto DATE,
     gender CHAR(1),
-    insnum INT,
+    insnum VARCHAR,
     airline CHAR(2),
     admnum FLOAT,
     fltno VARCHAR,
@@ -51,6 +51,7 @@ CREATE TABLE IF NOT EXISTS public.us_cities_demographics (
     race VARCHAR,
     count INT
 );
+DISTSTYLE ALL
 """
 
 create_airport_codes = """
@@ -86,37 +87,42 @@ CREATE TABLE IF NOT EXISTS public.world_temperature (
 
 create_i94cit_res = """
 CREATE TABLE IF NOT EXISTS public.i94cit_res (
-    code INT,
+    code INT PRIMARY KEY,
     country VARCHAR
-);
+)
+DISTSTYLE ALL
 """
 
 create_i94port = """
 CREATE TABLE IF NOT EXISTS public.i94port (
-    code CHAR(3),
+    code CHAR(3) PRIMARY KEY,
     port VARCHAR
-);
+)
+DISTSTYLE ALL
 """
 
 create_i94mode = """
 CREATE TABLE IF NOT EXISTS public.i94mode (
-    code INT,
+    code INT PRIMARY KEY,
     mode VARCHAR
-);
+)
+DISTSTYLE ALL
 """
 
 create_i94addr = """
 CREATE TABLE IF NOT EXISTS public.i94addr (
-    code CHAR(2),
+    code CHAR(2) PRIMARY KEY,
     addr VARCHAR
-);
+)
+DISTSTYLE ALL
 """
 
 create_i94visa = """
 CREATE TABLE IF NOT EXISTS public.i94visa (
-    code INT,
+    code INT PRIMARY KEY,
     type VARCHAR
-);
+)
+DISTSTYLE ALL
 """
 
 drop_table_queries = [drop_table_template.format('public', t) for t in table_list]

@@ -1,10 +1,16 @@
 import os
+import configparser
 from datetime import datetime, timedelta
 
 from airflow import DAG
 from airflow.operators.dummy_operator import DummyOperator
-from airflow.operators import (StageToRedshiftOperator, DataQualityOperator)
+from airflow.operators import (CopyToRedshiftOperator, SASValueToRedshiftOperator, DataQualityOperator)
 
+
+config = configparser.ConfigParser()
+config.read('dwh.cfg')
+DATA_LOCATION = config['S3']['DATA_LOCATION']
+SAS_DATA_LOCATION = config['S3']['SAS_DATA_LOCATION']
 
 default_args = {
     'owner': 'kene',
