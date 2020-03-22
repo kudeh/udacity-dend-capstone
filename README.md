@@ -39,9 +39,9 @@ The following datasets were used to create the analytics database:
    ```
 5. Initialize Airflow & Run Webserver
     ```bash
-    $ (venv) $ export AIRFLOW_HOME=$(pwd)
-    $ (venv) $ airflow initdb
-    $ (venv) $ airflow webserver -p 8080
+    (venv) $ export AIRFLOW_HOME=$(pwd)
+    (venv) $ airflow initdb
+    (venv) $ airflow webserver -p 8080
     ```
 6. Run Scheduler (Open New Terminal Tab)
     ```bash
@@ -50,3 +50,9 @@ The following datasets were used to create the analytics database:
     ```
 
 ## Usage
+1. Create Tables:
+    ```bash
+    (venv) $ python create_tables.py
+    ```
+2. Access Airflow UI at `localhost:8080`
+3. Run `etl_dag` in Airflow UI

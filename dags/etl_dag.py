@@ -22,7 +22,7 @@ default_args = {
     'depends_on_past': False,
     'start_date': datetime(2020, 3, 22),
     'retries': 3,
-    'retry_delay': timedelta(minutes=5),
+    'retry_delay': timedelta(minutes=1),
     'catchup': False,
     'email_on_retry': False
 }
@@ -38,32 +38,32 @@ start_operator = DummyOperator(task_id='Begin_execution',  dag=dag)
 end_operator = DummyOperator(task_id='Stop_execution',  dag=dag)
 
 
-for table in copy_s3_keys[:-1]:
-  copy_table_from_s3 = CopyToRedshiftOperator(
-    task_id=f'copy_{table["name"]}_from_s3',
-    dag=dag,
-    aws_credentials_id='aws_credentials',
-    redshift_conn_id='redshift',
-    table=table['name'],
-    s3_bucket=S3_BUCKET,
-    s3_key=table['key'],
-    delimiter=table['sep']
-  )
+# for table in copy_s3_keys:
+#   copy_table_from_s3 = CopyToRedshiftOperator(
+#     task_id=f'copy_{table["name"]}_from_s3',
+#     dag=dag,
+#     aws_credentials_id='aws_credentials',
+#     redshift_conn_id='redshift',
+#     table=table['name'],
+#     s3_bucket=S3_BUCKET,
+#     s3_key=table['key'],
+#     delimiter=table['sep']
+#   )
 
-  quality_check_table = DataQualityOperator(
-    task_id=f'quality_check_{table["name"]}_table',
-    dag=dag,
-    redshift_conn_id='redshift',
-    table=table['name'],
-    dq_checks=table['dq_checks']
-  )
+#   quality_check_table = DataQualityOperator(
+#     task_id=f'quality_check_{table["name"]}_table',
+#     dag=dag,
+#     redshift_conn_id='redshift',
+#     table=table['name'],
+#     dq_checks=table['dq_checks']
+#   )
 
-  start_operator >> copy_table_from_s3
-  copy_table_from_s3 >> quality_check_table
-  quality_check_table >> end_operator
+#   start_operator >> copy_table_from_s3
+#   copy_table_from_s3 >> quality_check_table
+#   quality_check_table >> end_operator
 
 
-for table in sas_source_code_tables_data:
+for table in sas_source_code_tables_data[:1]:
   load_table_from_sas_source_code = SASValueToRedshiftOperator(
     task_id=f'load_{table["name"]}_from_sas_source_code',
     dag=dag,

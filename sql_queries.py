@@ -67,9 +67,7 @@ CREATE TABLE IF NOT EXISTS public.airport_codes (
     gps_code VARCHAR,
     iata_code VARCHAR,
     local_code VARCHAR,
-    coordinates VARCHAR,
-    lat FLOAT,
-    long FLOAT
+    coordinates VARCHAR
 );
 """
 

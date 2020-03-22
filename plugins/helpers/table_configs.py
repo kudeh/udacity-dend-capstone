@@ -30,7 +30,7 @@ copy_s3_keys = [
   {'name': 'us_cities_demographics',
    'key': 'data/us-cities-demographics.csv',
    'sep': ';',
-   'dq_checks': [{'check_sql': "SELECT COUNT(*) FROM us_cities_demographics WHERE cicid is null", 'expected_result': 0}]
+   'dq_checks': []
   },
   {'name': 'airport_codes',
    'key': 'data/airport-codes_csv.csv',

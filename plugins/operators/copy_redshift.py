@@ -19,6 +19,7 @@ class CopyToRedshiftOperator(BaseOperator):
         SECRET_ACCESS_KEY '{}'
         IGNOREHEADER {}
         DELIMITER '{}'
+        CSV
     """
 
     @apply_defaults

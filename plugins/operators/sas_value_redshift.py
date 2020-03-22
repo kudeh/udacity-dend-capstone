@@ -1,9 +1,11 @@
 import pandas as pd
+import boto3
 
 from sqlalchemy import create_engine, text
 
 from airflow.hooks.base_hook import BaseHook
 from airflow.hooks.S3_hook import S3Hook
+from airflow.contrib.hooks.aws_hook import AwsHook
 from airflow.models import BaseOperator
 from airflow.utils.decorators import apply_defaults
 
@@ -53,8 +55,8 @@ class SASValueToRedshiftOperator(BaseOperator):
             None   
         """
         s3 = S3Hook(self.aws_credentials_id)
-        redshift_conn = BaseHook.get_connection(self.redshift_conn_id)
 
+        redshift_conn = BaseHook.get_connection(self.redshift_conn_id)
         self.log.info('Connecting to {}...'.format(redshift_conn.host))
         conn = create_engine('postgresql://{}:{}@{}:{}/{}'.format(
                              redshift_conn.login,
@@ -63,9 +65,10 @@ class SASValueToRedshiftOperator(BaseOperator):
                              redshift_conn.port,
                              redshift_conn.schema
                             ))
+        self.log.info('Connected!')
 
-        self.log.info('Reading From S3: {}/{}'.format(self.s3_bucket, self.s3_key))
-        file_string = s3.read_key('{}/{}'.format(self.s3_bucket, self.s3_key))
+        self.log.info('Reading From S3: s3://{}/{}'.format(self.s3_bucket, self.s3_key))
+        file_string = s3.read_key(self.s3_key, self.s3_bucket)
         self.log.info('File has {} characters'.format(len(file_string)))
 
         file_string = file_string[file_string.index(self.sas_value):]
