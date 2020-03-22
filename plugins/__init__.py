@@ -13,6 +13,7 @@ class UdacityPlugin(AirflowPlugin):
         operators.SASValueToRedshiftOperator,
         operators.DataQualityOperator
     ]
-    # helpers = [
-    #     helpers.SqlQueries
-    # ]
+    helpers = [
+        helpers.sas_source_code_tables_data,
+        helpers.copy_s3_keys
+    ]

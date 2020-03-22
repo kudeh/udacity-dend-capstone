@@ -35,8 +35,7 @@ The following datasets were used to create the analytics database:
     DB_PORT=
 
     [S3]
-    DATA_LOCATION=''
-    SAS_DATA_LOCATION=''
+    BUCKET=''
    ```
 5. Initialize Airflow & Run Webserver
     ```bash
