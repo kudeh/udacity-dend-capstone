@@ -10,8 +10,9 @@ from airflow.utils.decorators import apply_defaults
 class SASValueToRedshiftOperator(BaseOperator):
     """Custom Operator for extracting data from SAS source code.
     Attributes:
-        None
+        ui_color (str): color code for task in Airflow UI.
     """
+    ui_color = '#358150'
 
     @apply_defaults
     def __init__(self,
@@ -54,7 +55,7 @@ class SASValueToRedshiftOperator(BaseOperator):
         s3 = S3Hook(self.aws_credentials_id)
         redshift_conn = BaseHook.get_connection(self.redshift_conn_id)
 
-        self.log.info('Connecting to {}...'.format(self.redshift_conn_id.host))
+        self.log.info('Connecting to {}...'.format(redshift_conn.host))
         conn = create_engine('postgresql://{}:{}@{}:{}/{}'.format(
                              redshift_conn.login,
                              redshift_conn.password,
@@ -65,6 +66,7 @@ class SASValueToRedshiftOperator(BaseOperator):
 
         self.log.info('Reading From S3: {}/{}'.format(self.s3_bucket, self.s3_key))
         file_string = s3.read_key('{}/{}'.format(self.s3_bucket, self.s3_key))
+        self.log.info('File has {} characters'.format(len(file_string)))
 
         file_string = file_string[file_string.index(self.sas_value):]
         file_string = file_string[:file_string.index(';')]

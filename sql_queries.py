@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS public.us_cities_demographics (
     state_code CHAR(2),
     race VARCHAR,
     count INT
-);
+)
 DISTSTYLE ALL
 """
 
@@ -126,6 +126,6 @@ DISTSTYLE ALL
 """
 
 drop_table_queries = [drop_table_template.format('public', t) for t in table_list]
-create_table_queries = [create_table_immigration, create_us_cities_demographics,
-create_airport_codes, create_world_temperature, create_i94cit_res, create_i94port,
-create_i94mode, create_i94addr, create_i94visa]
+create_table_queries = [create_i94cit_res, create_i94port,
+create_i94mode, create_i94addr, create_i94visa, create_table_immigration, create_us_cities_demographics,
+create_airport_codes, create_world_temperature]

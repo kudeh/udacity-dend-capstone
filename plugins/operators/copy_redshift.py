@@ -9,11 +9,9 @@ class CopyToRedshiftOperator(BaseOperator):
     Attributes:
         ui_color (str): color code for task in Airflow UI.
         template_fields (:obj:`tuple` of :obj: `str`): list of template parameters.
-        copy_sql (str): template string for coping data from S3.
-        
+        copy_sql (str): template string for coping data from S3.   
     """
-    ui_color = '#358140'
-    template_fields = ("partition_template",)
+    ui_color = '#426a87'
     copy_sql = """
         COPY {}
         FROM '{}'
