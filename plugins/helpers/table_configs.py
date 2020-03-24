@@ -2,7 +2,7 @@ sas_source_code_tables_data = [
   {'name': 'i94cit_res',
    'value': 'i94cntyl',
    'columns': ['code', 'country'],
-   'dq_checks': {'check_sql': "SELECT COUNT(*) FROM i94cit_res WHERE code is null", 'expected_result': 0}
+   'dq_checks': [{'check_sql': "SELECT COUNT(*) FROM i94cit_res WHERE code is null", 'expected_result': 0}]
   },
   {'name': 'i94port',
    'value': 'i94prtl',
