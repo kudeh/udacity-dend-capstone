@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS public.us_cities_demographics (
     number_of_veterans INT,
     foreign_born INT,
     average_household_size FLOAT,
-    state_code CHAR(2),
+    state_code CHAR(2) REFERENCES i94addr(code),
     race VARCHAR,
     count INT
 )

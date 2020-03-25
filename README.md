@@ -1,7 +1,11 @@
 # Udacity Data Engineering Nanodegree Capstone Project
+##### Table of Contents  
+- [Introduction](#introduction)
+- [Set Up](#setup)
+- [Usage](#usage)
 
 ## Introduction
-For my capstone project I developed a data pipeline that creates an analytics database for querying information about immigration into the U.S on a monthly bases. The analytics tables are hosted in a Redshift Database and the pipeline implementation was done using Apache Airflow.
+For my capstone project I developed a data pipeline that creates an analytics database for querying information about immigration into the U.S on a monthly basis. The analytics tables are hosted in a Redshift Database and the pipeline implementation was done using Apache Airflow.
 
 ### Datasets
 The following datasets were used to create the analytics database:
@@ -9,6 +13,14 @@ The following datasets were used to create the analytics database:
 * World Temperature Data: This dataset came from Kaggle found [here](https://www.kaggle.com/berkeleyearth/climate-change-earth-surface-temperature-data).
 * U.S. City Demographic Data: This dataset contains information about the demographics of all US cities and census-designated places with a population greater or equal to 65,000. Dataset comes from OpenSoft found [here](https://public.opendatasoft.com/explore/dataset/us-cities-demographics/export/).
 * Airport Code Table: This is a simple table of airport codes and corresponding cities. The airport codes may refer to either IATA airport code, a three-letter code which is used in passenger reservation, ticketing and baggage-handling systems, or the ICAO airport code which is a four letter code used by ATC systems and for airports that do not have an IATA airport code (from wikipedia). It comes from [here](https://datahub.io/core/airport-codes#data).
+
+### Data Model
+The data model consists of tables `immigration`, `us_cities_demographics`, `airport_codes`, `world_temperature`, `i94cit_res`, `i94port`, `i94mode`, `i94addr`, `i94visa`
+
+### Data Pipeline
+
+
+### Example Queries
 
 ## Setup
 1. Python3 & Java 8 Required

@@ -10,6 +10,8 @@ class CopyToRedshiftOperator(BaseOperator):
         ui_color (str): color code for task in Airflow UI.
         template_fields (:obj:`tuple` of :obj: `str`): list of template parameters.
         copy_sql (str): template string for coping data from S3.   
+        csv (str): csv formatting template string.
+        parq (str): parquet formatting template string.
     """
     ui_color = '#426a87'
     copy_sql = """
@@ -17,9 +19,14 @@ class CopyToRedshiftOperator(BaseOperator):
         FROM '{}'
         ACCESS_KEY_ID '{}'
         SECRET_ACCESS_KEY '{}'
-        IGNOREHEADER {}
-        DELIMITER '{}'
-        CSV
+    """
+    csv = """
+    IGNOREHEADER {}
+    DELIMITER '{}'
+    CSV
+    """
+    parq = """
+    FORMAT AS PARQUET
     """
 
     @apply_defaults
@@ -29,6 +36,7 @@ class CopyToRedshiftOperator(BaseOperator):
                  table="",
                  s3_bucket="",
                  s3_key="",
+                 file_format="csv",
                  delimiter=",",
                  ignore_headers=1,
                  *args, **kwargs):
@@ -39,6 +47,7 @@ class CopyToRedshiftOperator(BaseOperator):
             table (str): Name of table to quality check.
             s3_bucket (str): S3 Bucket Name.
             s3_key (str): S3 Key Name.
+            file_format (str): format of file to copy to database.
             delimiter (str): csv delimiter.
             ignore_headers (int): if to ignore csv headers or not.
         """
@@ -48,6 +57,7 @@ class CopyToRedshiftOperator(BaseOperator):
         self.aws_credentials_id = aws_credentials_id
         self.s3_bucket = s3_bucket
         self.s3_key = s3_key
+        self.file_format = file_format
         self.delimiter = delimiter
         self.ignore_headers = ignore_headers
 
@@ -68,14 +78,23 @@ class CopyToRedshiftOperator(BaseOperator):
         s3_path = 's3://{}/{}'.format(self.s3_bucket, self.s3_key)
             
         self.log.info('Coping data from {} to {} on table Redshift'.format(s3_path, self.table))
+
         formatted_sql = CopyToRedshiftOperator.copy_sql.format(
             self.table,
             s3_path,
             credentials.access_key,
             credentials.secret_key,
-            self.ignore_headers,
-            self.delimiter
         )
+
+        if self.file_format=='csv':
+            formatted_sql += CopyToRedshiftOperator.csv.format(
+                self.ignore_headers,
+                self.delimiter
+            )
+        elif self.file_format=='parquet':
+            formatted_sql += CopyToRedshiftOperator.parq
+        
+        self.log.info('Running Copy Command {}'.format(formatted_sql))
         redshift.run(formatted_sql)
         self.log.info('Successfully Copied data from {} to {} table on Redshift'.format(s3_path, self.table))
 
