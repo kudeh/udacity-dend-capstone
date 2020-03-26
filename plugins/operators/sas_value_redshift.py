@@ -83,12 +83,20 @@ class SASValueToRedshiftOperator(BaseOperator):
             
             if '=' in line:
                 code, val = line.split('=')
-            
-                codes.append(code.strip())
-                values.append(val.strip())
+                code = code.strip()
+                val = val.strip()
+                
+                if code[0] == "'":
+                    code = code[1:-1]
+                    
+                if val[0] == "'":
+                    val = val[1:-1]
+                    
+                codes.append(code)
+                values.append(val)
 
         self.log.info('Converting parsed data to dataframe...')
-        df = pd.DataFrame(zip(codes,values), columns=self.columns)
+        df = pd.DataFrame(list(zip(codes,values)), columns=self.columns)
 
         self.log.info(f'Truncating table: {self.table}')
         truncate_query = text(f'TRUNCATE TABLE {self.table}')

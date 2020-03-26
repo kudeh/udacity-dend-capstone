@@ -18,16 +18,14 @@ from helpers import sas_source_code_tables_data, copy_s3_keys
 config = configparser.ConfigParser()
 config.read('dwh.cfg')
 
-AWS_ACCESS_KEY_ID = config['AWS']['AWS_ACCESS_KEY_ID']
-AWS_SECRET_ACCESS_KEY = config['AWS']['AWS_SECRET_ACCESS_KEY']
 
-S3_BUCKET = config['S3']['BUCKET']
+S3_BUCKET = 'kene-udacity-dend'
 
 
 default_args = {
     'owner': 'kene',
     'depends_on_past': False,
-    'start_date': datetime(2020, 3, 22),
+    'start_date': datetime(2020, 3, 25),
     'retries': 3,
     'retry_delay': timedelta(minutes=1),
     'catchup': False,

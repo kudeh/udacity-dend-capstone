@@ -17,15 +17,16 @@ class CopyToRedshiftOperator(BaseOperator):
     copy_sql = """
         COPY {}
         FROM '{}'
-        ACCESS_KEY_ID '{}'
-        SECRET_ACCESS_KEY '{}'
     """
     csv = """
+    ACCESS_KEY_ID '{}'
+    SECRET_ACCESS_KEY '{}'
     IGNOREHEADER {}
     DELIMITER '{}'
     CSV
     """
     parq = """
+    IAM_ROLE {}
     FORMAT AS PARQUET
     """
 
@@ -70,6 +71,7 @@ class CopyToRedshiftOperator(BaseOperator):
         """
         aws_hook = AwsHook(self.aws_credentials_id)
         credentials = aws_hook.get_credentials()
+        self.log.info(credentials)
         redshift = PostgresHook(postgres_conn_id=self.redshift_conn_id)
         
         self.log.info('Clearing data from {}'.format(self.table))
@@ -81,18 +83,20 @@ class CopyToRedshiftOperator(BaseOperator):
 
         formatted_sql = CopyToRedshiftOperator.copy_sql.format(
             self.table,
-            s3_path,
-            credentials.access_key,
-            credentials.secret_key,
+            s3_path
         )
 
         if self.file_format=='csv':
             formatted_sql += CopyToRedshiftOperator.csv.format(
+                credentials.access_key,
+                credentials.secret_key,
                 self.ignore_headers,
                 self.delimiter
             )
         elif self.file_format=='parquet':
-            formatted_sql += CopyToRedshiftOperator.parq
+            formatted_sql += CopyToRedshiftOperator.parq.format(
+                credentials.role_arn
+            )
         
         self.log.info('Running Copy Command {}'.format(formatted_sql))
         redshift.run(formatted_sql)
