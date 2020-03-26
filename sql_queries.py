@@ -5,19 +5,19 @@ drop_table_template = "DROP TABLE IF EXISTS {}.{}"
 
 create_table_immigration = """
 CREATE TABLE IF NOT EXISTS public.immigration (
-    cicid INT PRIMARY KEY,
-    i94yr INT SORTKEY,
-    i94mon INT DISTKEY,
-    i94cit INT REFERENCES i94cit_res(code),
-    i94res INT REFERENCES i94cit_res(code),
+    cicid FLOAT PRIMARY KEY,
+    i94yr FLOAT SORTKEY,
+    i94mon FLOAT DISTKEY,
+    i94cit FLOAT REFERENCES i94cit_res(code),
+    i94res FLOAT REFERENCES i94cit_res(code),
     i94port CHAR(3) REFERENCES i94port(code),
     arrdate FLOAT,
-    i94mode INT REFERENCES i94mode(code),
-    i94addr INT REFERENCES i94addr(code),
+    i94mode FLOAT REFERENCES i94mode(code),
+    i94addr VARCHAR REFERENCES i94addr(code),
     depdate FLOAT,
-    i94bir INT,
-    i94visa INT REFERENCES i94visa(code),
-    count INT,
+    i94bir FLOAT,
+    i94visa FLOAT REFERENCES i94visa(code),
+    count FLOAT,
     dtadfile VARCHAR,
     visapost CHAR(3),
     occup CHAR(3),
@@ -25,11 +25,11 @@ CREATE TABLE IF NOT EXISTS public.immigration (
     entdepd CHAR(1),
     entdepu CHAR(1),
     matflag CHAR(1),
-    biryear INT,
+    biryear FLOAT,
     dtaddto VARCHAR,
     gender CHAR(1),
     insnum VARCHAR,
-    airline CHAR(2),
+    airline VARCHAR,
     admnum FLOAT,
     fltno VARCHAR,
     visatype VARCHAR
@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS public.world_temperature (
 
 create_i94cit_res = """
 CREATE TABLE IF NOT EXISTS public.i94cit_res (
-    code INT PRIMARY KEY,
+    code FLOAT PRIMARY KEY,
     country VARCHAR
 )
 DISTSTYLE ALL
@@ -101,7 +101,7 @@ DISTSTYLE ALL
 
 create_i94mode = """
 CREATE TABLE IF NOT EXISTS public.i94mode (
-    code INT PRIMARY KEY,
+    code FLOAT PRIMARY KEY,
     mode VARCHAR
 )
 DISTSTYLE ALL
@@ -117,7 +117,7 @@ DISTSTYLE ALL
 
 create_i94visa = """
 CREATE TABLE IF NOT EXISTS public.i94visa (
-    code INT PRIMARY KEY,
+    code FLOAT PRIMARY KEY,
     type VARCHAR
 )
 DISTSTYLE ALL
