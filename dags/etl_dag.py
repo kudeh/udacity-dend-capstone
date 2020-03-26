@@ -18,8 +18,8 @@ from helpers import sas_source_code_tables_data, copy_s3_keys
 config = configparser.ConfigParser()
 config.read('dwh.cfg')
 
-
-S3_BUCKET = 'kene-udacity-dend'
+REDSHIFT_ARN = config['CLUSTER']['ARN']
+S3_BUCKET = config['S3']['BUCKET']
 
 
 default_args = {
@@ -44,12 +44,13 @@ start_operator = DummyOperator(task_id='Begin_execution',  dag=dag)
 end_operator = DummyOperator(task_id='Stop_execution',  dag=dag)
 
 
-for table in copy_s3_keys[0:2]:
+for table in copy_s3_keys:
   copy_table_from_s3 = CopyToRedshiftOperator(
     task_id=f'copy_{table["name"]}_from_s3',
     dag=dag,
     aws_credentials_id='aws_credentials',
     redshift_conn_id='redshift',
+    role_arn=REDSHIFT_ARN,
     table=table['name'],
     s3_bucket=S3_BUCKET,
     s3_key=table['key'],

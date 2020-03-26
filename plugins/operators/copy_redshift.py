@@ -26,7 +26,7 @@ class CopyToRedshiftOperator(BaseOperator):
     CSV
     """
     parq = """
-    IAM_ROLE {}
+    IAM_ROLE '{}'
     FORMAT AS PARQUET
     """
 
@@ -34,6 +34,7 @@ class CopyToRedshiftOperator(BaseOperator):
     def __init__(self,
                  redshift_conn_id="",
                  aws_credentials_id="",
+                 role_arn="",
                  table="",
                  s3_bucket="",
                  s3_key="",
@@ -45,6 +46,7 @@ class CopyToRedshiftOperator(BaseOperator):
         Args:
             redshift_conn_id (str): Airflow connection ID for redshift database.
             aws_credentials_id (str): Airlflow connection ID for aws key and secret.
+            role_arn (str): arn role tied to redshift db.
             table (str): Name of table to quality check.
             s3_bucket (str): S3 Bucket Name.
             s3_key (str): S3 Key Name.
@@ -56,6 +58,7 @@ class CopyToRedshiftOperator(BaseOperator):
         self.table = table
         self.redshift_conn_id = redshift_conn_id
         self.aws_credentials_id = aws_credentials_id
+        self.role_arn = role_arn
         self.s3_bucket = s3_bucket
         self.s3_key = s3_key
         self.file_format = file_format
@@ -95,7 +98,7 @@ class CopyToRedshiftOperator(BaseOperator):
             )
         elif self.file_format=='parquet':
             formatted_sql += CopyToRedshiftOperator.parq.format(
-                credentials.role_arn
+                self.role_arn
             )
         
         self.log.info('Running Copy Command {}'.format(formatted_sql))
