@@ -46,10 +46,6 @@ The data model consists of tables `immigration`, `us_cities_demographics`, `airp
     DB_PASSWORD=
     DB_PORT=
 
-    [AWS]
-    AWS_ACCESS_KEY_ID=
-    AWS_SECRET_ACCESS_KEY=
-
     [S3]
     BUCKET=
    ```
@@ -71,4 +67,9 @@ The data model consists of tables `immigration`, `us_cities_demographics`, `airp
     (venv) $ python create_tables.py
     ```
 2. Access Airflow UI at `localhost:8080`
-3. Run `etl_dag` in Airflow UI
+3. Create Airflow Connections:
+    * AWS connection:
+    <img src="README_IMGS/aws_credentials.png"/>
+    * Redshift connection
+    <img src="README_IMGS/redshift.png"/>
+4. Run `etl_dag` in Airflow UI
