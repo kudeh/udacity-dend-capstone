@@ -2,17 +2,27 @@ import os
 import configparser
 from datetime import datetime, timedelta
 
+from pyspark.sql import SparkSession
+from pyspark.sql.types import DateType
+import pyspark.sql.functions as F
+from pyspark.sql.functions import udf, rand
+from pyspark.sql.functions import isnan, when, count, col
+
 from airflow import DAG
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators import (CopyToRedshiftOperator, SASValueToRedshiftOperator, DataQualityOperator)
-
 
 from helpers import sas_source_code_tables_data, copy_s3_keys
 
 
 config = configparser.ConfigParser()
 config.read('dwh.cfg')
+
+AWS_ACCESS_KEY_ID = config['AWS']['AWS_ACCESS_KEY_ID']
+AWS_SECRET_ACCESS_KEY = config['AWS']['AWS_SECRET_ACCESS_KEY']
+
 S3_BUCKET = config['S3']['BUCKET']
+
 
 default_args = {
     'owner': 'kene',
@@ -23,6 +33,7 @@ default_args = {
     'catchup': False,
     'email_on_retry': False
 }
+
 
 dag = DAG('etl_dag',
           default_args=default_args,
@@ -35,7 +46,7 @@ start_operator = DummyOperator(task_id='Begin_execution',  dag=dag)
 end_operator = DummyOperator(task_id='Stop_execution',  dag=dag)
 
 
-for table in copy_s3_keys:
+for table in copy_s3_keys[0:2]:
   copy_table_from_s3 = CopyToRedshiftOperator(
     task_id=f'copy_{table["name"]}_from_s3',
     dag=dag,
@@ -44,6 +55,7 @@ for table in copy_s3_keys:
     table=table['name'],
     s3_bucket=S3_BUCKET,
     s3_key=table['key'],
+    file_format=table['file_format'],
     delimiter=table['sep']
   )
 

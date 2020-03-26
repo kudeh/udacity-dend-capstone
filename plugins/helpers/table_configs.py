@@ -27,18 +27,27 @@ sas_source_code_tables_data = [
 ]
 
 copy_s3_keys = [
+  {'name': 'immigration',
+   'key': 'sas_data',
+   'file_format': 'parquet',
+   'sep': '',
+   'dq_checks': []
+  },
   {'name': 'us_cities_demographics',
    'key': 'data/us-cities-demographics.csv',
+   'file_format': 'csv',
    'sep': ';',
    'dq_checks': []
   },
   {'name': 'airport_codes',
    'key': 'data/airport-codes_csv.csv',
+   'file_format': 'csv',
    'sep': ',',
    'dq_checks': []
   },
   {'name': 'world_temperature',
    'key': 'data/GlobalLandTemperaturesByCity.csv',
+   'file_format': 'csv',
    'sep': ',',
    'dq_checks': []
   },

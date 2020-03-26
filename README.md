@@ -46,8 +46,12 @@ The data model consists of tables `immigration`, `us_cities_demographics`, `airp
     DB_PASSWORD=
     DB_PORT=
 
+    [AWS]
+    AWS_ACCESS_KEY_ID=
+    AWS_SECRET_ACCESS_KEY=
+
     [S3]
-    BUCKET=''
+    BUCKET=
    ```
 5. Initialize Airflow & Run Webserver
     ```bash
