@@ -7,6 +7,8 @@
 ## Introduction
 For my capstone project I developed a data pipeline that creates an analytics database for querying information about immigration into the U.S on a monthly basis. The analytics tables are hosted in a Redshift Database and the pipeline implementation was done using Apache Airflow.
 
+View [Notebook](https://github.com/kudeh/udacity-dend-capstone/blob/master/Capstone%20EDA.ipynb) for more details.
+
 ### Datasets
 The following datasets were used to create the analytics database:
 * I94 Immigration Data: This data comes from the US National Tourism and Trade Office found [here](https://travel.trade.gov/research/reports/i94/historical/2016.html). Each report contains international visitor arrival statistics by world regions and select countries (including top 20), type of visa, mode of transportation, age groups, states visited (first intended address only), and the top ports of entry (for select countries).
@@ -16,9 +18,10 @@ The following datasets were used to create the analytics database:
 
 ### Data Model
 The data model consists of tables `immigration`, `us_cities_demographics`, `airport_codes`, `world_temperature`, `i94cit_res`, `i94port`, `i94mode`, `i94addr`, `i94visa`
+<img src="README_IMGS/ERD.jpg"/>
 
 ### Data Pipeline
-
+<img src="README_IMGS/dag.png"/>
 
 ### Example Queries
 
@@ -28,12 +31,12 @@ The data model consists of tables `immigration`, `us_cities_demographics`, `airp
     ```bash
     $ python3 -m venv venv
     $ source venv/bin/activate
-    $ (venv) $ pip install -r requirements.txt
-    $ (venv) $ ipython kernel install --user --name=projectname
+    (venv) $ pip install -r requirements.txt
+    (venv) $ ipython kernel install --user --name=projectname
     ```
 3. set java version to java8 if not default
     ```bash
-    $(venv) export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
+    (venv) $ export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
     ```
 4. create aws config
    * create file `dwh.cfg`
@@ -45,6 +48,7 @@ The data model consists of tables `immigration`, `us_cities_demographics`, `airp
     DB_USER=
     DB_PASSWORD=
     DB_PORT=
+    ARN=
 
     [S3]
     BUCKET=
